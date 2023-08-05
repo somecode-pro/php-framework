@@ -1,0 +1,19 @@
+{
+  "name": "somecode/php-framework",
+  "authors": [
+    {
+      "name": "Mikhail Protasevich",
+      "email": "hello@areaweb.su"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "App\\": "app",
+      "Somecode\\Framework\\": "framework"
+    }
+  },
+  "require-dev": {
+    "symfony/var-dumper": "^6.3",
+    "laravel/pint": "^1.10"
+  }
+}
