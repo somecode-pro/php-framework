@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d0901f674e1a25eb38d254560b2e258e",
+    "content-hash": "6c735d237ffe8ed3da5371cb140d87d9",
     "packages": [
         {
             "name": "nikic/fast-route",
@@ -55,6 +55,33 @@
                 "source": "https://github.com/nikic/FastRoute/tree/master"
             },
             "time": "2018-02-13T20:26:39+00:00"
+        },
+        {
+            "name": "somecode/php-framework",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "framework",
+                "reference": "f2d102abd6200699d67b09da4d982566eeec1bea"
+            },
+            "require": {
+                "nikic/fast-route": "^1.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Somecode\\Framework\\": "src"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Mikhail Protasevich",
+                    "email": "hello@areaweb.su"
+                }
+            ],
+            "transport-options": {
+                "relative": true
+            }
         }
     ],
     "packages-dev": [
@@ -361,7 +388,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "somecode/php-framework": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
