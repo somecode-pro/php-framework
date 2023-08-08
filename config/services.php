@@ -2,6 +2,7 @@
 
 use League\Container\Argument\Literal\ArrayArgument;
 use League\Container\Container;
+use League\Container\ReflectionContainer;
 use Somecode\Framework\Http\Kernel;
 use Somecode\Framework\Routing\Router;
 use Somecode\Framework\Routing\RouterInterface;
@@ -14,12 +15,15 @@ $routes = include BASE_PATH.'/routes/web.php';
 
 $container = new Container();
 
+$container->delegate(new ReflectionContainer(true));
+
 $container->add(RouterInterface::class, Router::class);
 
 $container->extend(RouterInterface::class)
     ->addMethodCall('registerRoutes', [new ArrayArgument($routes)]);
 
 $container->add(Kernel::class)
-    ->addArgument(RouterInterface::class);
+    ->addArgument(RouterInterface::class)
+    ->addArgument($container);
 
 return $container;
