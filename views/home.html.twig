@@ -1,13 +1,8 @@
-<!doctype html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>PHP Framework</title>
-</head>
-<body>
-<h1>Home page</h1><br>
-<a href="{{ youTubeChannel }}">YouTube Channel</a>
-</body>
-</html>
+{% extends 'default.html.twig' %}
+
+{% block main %}
+    <div class="bg-body-tertiary p-5 rounded">
+        <h1>Домашняя страница</h1>
+        <a class="btn btn-lg btn-danger mt-3" href="{{ youTubeChannel }}" role="button">Перейти на YouTube</a>
+    </div>
+{% endblock %}
