@@ -4,11 +4,13 @@ namespace App\Controllers;
 
 use App\Services\YouTubeService;
 use Somecode\Framework\Http\Response;
+use Twig\Environment;
 
 class HomeController
 {
     public function __construct(
-        private readonly YouTubeService $youTube
+        private readonly YouTubeService $youTube,
+        private readonly Environment $twig
     ) {
     }
 
