@@ -19,6 +19,7 @@ class Kernel
         $this->registerCommands();
 
         // 2. Запуск команды
+
         $status = $this->application->run();
 
         // 3. Возвращаем код
