@@ -7,7 +7,8 @@ use Psr\Container\ContainerInterface;
 class Kernel
 {
     public function __construct(
-        private ContainerInterface $container
+        private ContainerInterface $container,
+        private Application $application
     ) {
     }
 
@@ -18,10 +19,11 @@ class Kernel
         $this->registerCommands();
 
         // 2. Запуск команды
+        $status = $this->application->run();
 
         // 3. Возвращаем код
 
-        return 0;
+        return $status;
     }
 
     private function registerCommands(): void
