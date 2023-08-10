@@ -10,7 +10,7 @@ class PostController extends AbstractController
     public function show(int $id): Response
     {
         return $this->render('posts.html.twig', [
-            'postId' => $id,
+            'postId' => '<script>alert("Boooom!!!")</script>', // $id,
         ]);
     }
 
