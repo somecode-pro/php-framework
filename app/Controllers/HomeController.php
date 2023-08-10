@@ -15,6 +15,9 @@ class HomeController extends AbstractController
 
     public function index(): Response
     {
+        phpinfo();
+        dd(123);
+
         return $this->render('home.html.twig', [
             'youTubeChannel' => $this->youTube->getChannelUrl(),
         ]);
