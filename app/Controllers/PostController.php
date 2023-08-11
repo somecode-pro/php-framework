@@ -21,6 +21,6 @@ class PostController extends AbstractController
 
     public function store()
     {
-        dd('Form submitted');
+        // $this->request
     }
 }
