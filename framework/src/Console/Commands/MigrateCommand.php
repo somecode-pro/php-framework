@@ -42,15 +42,17 @@ class MigrateCommand implements CommandInterface
 
             $scheme = new Schema();
 
-            foreach ($migrationsToApply as $migrate) {
-                $migrationInstance = require $this->migrationsPath."/$migrate";
+            foreach ($migrationsToApply as $migration) {
+                $migrationInstance = require $this->migrationsPath."/$migration";
+
+                // 5. Создать SQL-запрос для миграций, которые еще не были выполнены
 
                 $migrationInstance->up($scheme);
 
-                // 5. Создать SQL-запрос для миграций, которые еще не были выполнены
-            }
+                // 6. Добавить миграцию в базу данных
 
-            // 6. Добавить миграцию в базу данных
+                $this->addMigration($migration);
+            }
 
             // 7. Выполнить SQL-запрос
 
@@ -111,5 +113,15 @@ class MigrateCommand implements CommandInterface
         });
 
         return array_values($filteredFiles);
+    }
+
+    private function addMigration(string $migration): void
+    {
+        $queryBuilder = $this->connection->createQueryBuilder();
+
+        $queryBuilder->insert(self::MIGRATIONS_TABLE)
+            ->values(['migration' => ':migration'])
+            ->setParameter('migration', $migration)
+            ->executeQuery();
     }
 }
