@@ -40,14 +40,14 @@ class MigrateCommand implements CommandInterface
 
             $migrationsToApply = array_values(array_diff($migrationFiles, $appliedMigrations));
 
-            $scheme = new Schema();
+            $schema = new Schema();
 
             foreach ($migrationsToApply as $migration) {
                 $migrationInstance = require $this->migrationsPath."/$migration";
 
                 // 5. Создать SQL-запрос для миграций, которые еще не были выполнены
 
-                $migrationInstance->up($scheme);
+                $migrationInstance->up($schema);
 
                 // 6. Добавить миграцию в базу данных
 
@@ -56,10 +56,15 @@ class MigrateCommand implements CommandInterface
 
             // 7. Выполнить SQL-запрос
 
+            $sqlArray = $schema->toSql($this->connection->getDatabasePlatform());
+
+            foreach ($sqlArray as $sql) {
+                $this->connection->executeQuery($sql);
+            }
+
             $this->connection->commit();
 
         } catch (\Throwable $e) {
-
             $this->connection->rollBack();
 
             throw $e;
