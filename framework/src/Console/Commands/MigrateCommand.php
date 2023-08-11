@@ -29,6 +29,8 @@ class MigrateCommand implements CommandInterface
 
             // 2. Получить $appliedMigrations (миграции, которые уже есть в таблице migrations)
 
+            $appliedMigrations = $this->getAppliedMigrations();
+
             // 3. Получить $migrationFiles из папки миграций
 
             // 4. Получить миграции для применения
@@ -40,7 +42,9 @@ class MigrateCommand implements CommandInterface
             // 7. Выполнить SQL-запрос
 
             $this->connection->commit();
+
         } catch (\Throwable $e) {
+
             $this->connection->rollBack();
 
             throw $e;
@@ -72,5 +76,16 @@ class MigrateCommand implements CommandInterface
 
             echo 'Migrations table created'.PHP_EOL;
         }
+    }
+
+    private function getAppliedMigrations(): array
+    {
+        $queryBuilder = $this->connection->createQueryBuilder();
+
+        return $queryBuilder
+            ->select('migration')
+            ->from(self::MIGRATIONS_TABLE)
+            ->executeQuery()
+            ->fetchFirstColumn();
     }
 }
