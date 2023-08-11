@@ -20,21 +20,31 @@ class MigrateCommand implements CommandInterface
 
     public function execute(array $parameters = []): int
     {
-        // 1. Создать таблицу миграций (migrations), если таблица еще не существует
+        try {
+            // 1. Создать таблицу миграций (migrations), если таблица еще не существует
 
-        $this->createMigrationsTable();
+            $this->createMigrationsTable();
 
-        // 2. Получить $appliedMigrations (миграции, которые уже есть в таблице migrations)
+            $this->connection->beginTransaction();
 
-        // 3. Получить $migrationFiles из папки миграций
+            // 2. Получить $appliedMigrations (миграции, которые уже есть в таблице migrations)
 
-        // 4. Получить миграции для применения
+            // 3. Получить $migrationFiles из папки миграций
 
-        // 5. Создать SQL-запрос для миграций, которые еще не были выполнены
+            // 4. Получить миграции для применения
 
-        // 6. Добавить миграцию в базу данных
+            // 5. Создать SQL-запрос для миграций, которые еще не были выполнены
 
-        // 7. Выполнить SQL-запрос
+            // 6. Добавить миграцию в базу данных
+
+            // 7. Выполнить SQL-запрос
+
+            $this->connection->commit();
+        } catch (\Throwable $e) {
+            $this->connection->rollBack();
+
+            throw $e;
+        }
 
         return 0;
     }
