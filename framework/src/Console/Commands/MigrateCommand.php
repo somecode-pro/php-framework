@@ -40,7 +40,15 @@ class MigrateCommand implements CommandInterface
 
             $migrationsToApply = array_values(array_diff($migrationFiles, $appliedMigrations));
 
-            // 5. Создать SQL-запрос для миграций, которые еще не были выполнены
+            $scheme = new Schema();
+
+            foreach ($migrationsToApply as $migrate) {
+                $migrationInstance = require $this->migrationsPath."/$migrate";
+
+                $migrationInstance->up($scheme);
+
+                // 5. Создать SQL-запрос для миграций, которые еще не были выполнены
+            }
 
             // 6. Добавить миграцию в базу данных
 
