@@ -13,9 +13,10 @@ use Somecode\Framework\Dbal\ConnectionFactory;
 use Somecode\Framework\Http\Kernel;
 use Somecode\Framework\Routing\Router;
 use Somecode\Framework\Routing\RouterInterface;
+use Somecode\Framework\Session\Session;
+use Somecode\Framework\Session\SessionInterface;
+use Somecode\Framework\Template\TwigFactory;
 use Symfony\Component\Dotenv\Dotenv;
-use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
 
 $dotenv = new Dotenv();
 $dotenv->load(BASE_PATH.'/.env');
@@ -46,11 +47,14 @@ $container->add(Kernel::class)
     ->addArgument(RouterInterface::class)
     ->addArgument($container);
 
-$container->addShared('twig-loader', FilesystemLoader::class)
-    ->addArgument(new StringArgument($viewsPath));
+$container->addShared(SessionInterface::class, Session::class);
 
-$container->addShared('twig', Environment::class)
-    ->addArgument('twig-loader');
+$container->add('twig-factory', TwigFactory::class)
+    ->addArguments([new StringArgument($viewsPath), SessionInterface::class]);
+
+$container->addShared('twig', function () use ($container) {
+    return $container->get('twig-factory')->create();
+});
 
 $container->inflector(AbstractController::class)
     ->invokeMethod('setContainer', [$container]);
