@@ -3,6 +3,7 @@
 namespace App\Forms\User;
 
 use App\Entities\User;
+use App\Services\UserService;
 
 class RegisterForm
 {
@@ -13,6 +14,11 @@ class RegisterForm
     private string $password;
 
     private string $passwordConfirmation;
+
+    public function __construct(
+        private UserService $userService
+    ) {
+    }
 
     public function setFields(string $email, string $password, string $passwordConfirmation, string $name = null): void
     {
@@ -26,12 +32,12 @@ class RegisterForm
     {
         $user = User::create(
             $this->email,
-            $this->password,
+            password_hash($this->password, PASSWORD_DEFAULT),
             new \DateTimeImmutable(),
             $this->name
         );
 
-        $user = $this->userService->store($user);
+        $user = $this->userService->save($user);
 
         return $user;
     }

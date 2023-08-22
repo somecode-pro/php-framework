@@ -3,12 +3,18 @@
 namespace App\Controllers;
 
 use App\Forms\User\RegisterForm;
+use App\Services\UserService;
 use Somecode\Framework\Controller\AbstractController;
 use Somecode\Framework\Http\RedirectResponse;
 use Somecode\Framework\Http\Response;
 
 class RegisterController extends AbstractController
 {
+    public function __construct(
+        private UserService $userService
+    ) {
+    }
+
     public function form(): Response
     {
         return $this->render('register.html.twig');
@@ -17,7 +23,7 @@ class RegisterController extends AbstractController
     public function register()
     {
         // 1. Создайте модель формы, которая будет:
-        $form = new RegisterForm();
+        $form = new RegisterForm($this->userService);
 
         $form->setFields(
             $this->request->input('email'),
@@ -43,8 +49,12 @@ class RegisterController extends AbstractController
 
         // 4. Добавить сообщение об успешной регистрации
 
+        $this->request->getSession()->setFlash('success', "Пользователь {$user->getEmail()} успешно зарегистрирован");
+
         // 5. Войти в систему под пользователем
 
         // 6. Перенаправить на нужную страницу
+
+        return new RedirectResponse('/register');
     }
 }
