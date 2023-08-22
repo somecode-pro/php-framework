@@ -26,6 +26,9 @@ class RegisterController extends AbstractController
             $this->request->input('name'),
         );
 
+        // 2. Валидация
+        // Если есть ошибки валидации, добавить в сессию и перенаправить на форму
+
         if ($form->hasValidationErrors()) {
             foreach ($form->getValidationErrors() as $error) {
                 $this->request->getSession()->setFlash('error', $error);
@@ -34,10 +37,9 @@ class RegisterController extends AbstractController
             return new RedirectResponse('/register');
         }
 
-        // 2. Валидация
-        // Если есть ошибки валидации, добавить в сессию и перенаправить на форму
-
         // 3. Зарегистрировать пользователя, вызвав $form->save()
+
+        $user = $form->save();
 
         // 4. Добавить сообщение об успешной регистрации
 
