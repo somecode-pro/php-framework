@@ -25,6 +25,10 @@ class RegisterController extends AbstractController
             $this->request->input('name'),
         );
 
+        if ($form->hasValidationErrors()) {
+            dd($form->getValidationErrors());
+        }
+
         // 2. Валидация
         // Если есть ошибки валидации, добавить в сессию и перенаправить на форму
 
