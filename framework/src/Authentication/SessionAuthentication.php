@@ -2,10 +2,15 @@
 
 namespace Somecode\Framework\Authentication;
 
+use Somecode\Framework\Session\SessionInterface;
+
 class SessionAuthentication implements SessionAuthInterface
 {
+    private AuthUserInterface $user;
+
     public function __construct(
-        private UserServiceInterface $userService
+        private UserServiceInterface $userService,
+        private SessionInterface $session
     ) {
     }
 
@@ -26,9 +31,11 @@ class SessionAuthentication implements SessionAuthInterface
         return false;
     }
 
-    public function login(AuthUserInterface $user)
+    public function login(AuthUserInterface $user): void
     {
-        // TODO: Implement login() method.
+        $this->session->set('user_id', $user->getId());
+
+        $this->user = $user;
     }
 
     public function logout()
@@ -38,6 +45,6 @@ class SessionAuthentication implements SessionAuthInterface
 
     public function getUser(): AuthUserInterface
     {
-        // TODO: Implement getUser() method.
+        return $this->user;
     }
 }
