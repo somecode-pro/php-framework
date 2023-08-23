@@ -20,11 +20,13 @@ class LoginController extends AbstractController
 
     public function login()
     {
-        dd(
-            $this->sessionAuth->authenticate(
-                $this->request->input('email'),
-                $this->request->input('password'),
-            )
+        $isAuth = $this->sessionAuth->authenticate(
+            $this->request->input('email'),
+            $this->request->input('password'),
         );
+
+        if ($isAuth) {
+            dd($this->sessionAuth->getUser());
+        }
     }
 }

@@ -20,7 +20,7 @@ class User implements AuthUserInterface
         return new static($id, $name, $email, $password, $createdAt ?? new \DateTimeImmutable());
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
