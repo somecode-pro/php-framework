@@ -12,6 +12,13 @@ $request = Request::createFromGlobals();
 /** @var \League\Container\Container $container */
 $container = require BASE_PATH.'/config/services.php';
 
+$eventDispatcher = $container->get(\Somecode\Framework\Event\EventDispatcher::class);
+$eventDispatcher
+    ->addListener(
+        \Somecode\Framework\Http\Events\ResponseEvent::class,
+        new \App\Listeners\ContentLengthListener()
+    );
+
 $kernel = $container->get(Kernel::class);
 
 $response = $kernel->handle($request);
