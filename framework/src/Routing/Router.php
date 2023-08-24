@@ -2,13 +2,8 @@
 
 namespace Somecode\Framework\Routing;
 
-use FastRoute\Dispatcher;
-use FastRoute\RouteCollector;
-use function FastRoute\simpleDispatcher;
 use League\Container\Container;
 use Somecode\Framework\Controller\AbstractController;
-use Somecode\Framework\Http\Exceptions\MethodNotAllowedException;
-use Somecode\Framework\Http\Exceptions\RouteNotFoundException;
 use Somecode\Framework\Http\Request;
 
 class Router implements RouterInterface
@@ -17,7 +12,8 @@ class Router implements RouterInterface
 
     public function dispatch(Request $request, Container $container): array
     {
-        [$handler, $vars] = $this->extractRouteInfo($request);
+        $handler = $request->getRouteHandler();
+        $vars = $request->getRouteArgs();
 
         if (is_array($handler)) {
             [$controllerId, $method] = $handler;
@@ -31,38 +27,5 @@ class Router implements RouterInterface
         }
 
         return [$handler, $vars];
-    }
-
-    public function registerRoutes(array $routes): void
-    {
-        $this->routes = $routes;
-    }
-
-    private function extractRouteInfo(Request $request): array
-    {
-        $dispatcher = simpleDispatcher(function (RouteCollector $collector) {
-            foreach ($this->routes as $route) {
-                $collector->addRoute(...$route);
-            }
-        });
-
-        $routeInfo = $dispatcher->dispatch(
-            $request->getMethod(),
-            $request->getPath(),
-        );
-
-        switch ($routeInfo[0]) {
-            case Dispatcher::FOUND:
-                return [$routeInfo[1], $routeInfo[2]];
-            case Dispatcher::METHOD_NOT_ALLOWED:
-                $allowedMethods = implode(', ', $routeInfo[1]);
-                $e = new MethodNotAllowedException("Supported HTTP methods: $allowedMethods");
-                $e->setStatusCode(405);
-                throw $e;
-            default:
-                $e = new RouteNotFoundException('Route not found');
-                $e->setStatusCode(404);
-                throw $e;
-        }
     }
 }
