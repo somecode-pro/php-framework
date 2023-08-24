@@ -23,7 +23,6 @@ class Kernel
     {
         try {
             $response = $this->requestHandler->handle($request);
-
         } catch (\Exception $e) {
             $response = $this->createExceptionResponse($e);
         }
