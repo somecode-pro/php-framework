@@ -39,9 +39,9 @@ class SessionAuthentication implements SessionAuthInterface
         $this->user = $user;
     }
 
-    public function logout()
+    public function logout(): void
     {
-        // TODO: Implement logout() method.
+        $this->session->remove(Session::AUTH_KEY);
     }
 
     public function getUser(): AuthUserInterface
