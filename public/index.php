@@ -16,6 +16,10 @@ $eventDispatcher = $container->get(\Somecode\Framework\Event\EventDispatcher::cl
 $eventDispatcher
     ->addListener(
         \Somecode\Framework\Http\Events\ResponseEvent::class,
+        new \App\Listeners\InternalErrorListener()
+    )
+    ->addListener(
+        \Somecode\Framework\Http\Events\ResponseEvent::class,
         new \App\Listeners\ContentLengthListener()
     );
 

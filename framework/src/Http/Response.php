@@ -48,4 +48,9 @@ class Response
     {
         return $this->content;
     }
+
+    public function setStatusCode(int $statusCode): void
+    {
+        $this->statusCode = $statusCode;
+    }
 }

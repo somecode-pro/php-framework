@@ -28,6 +28,8 @@ class Kernel
             $response = $this->createExceptionResponse($e);
         }
 
+        // $response->setStatusCode(500);
+
         $this->eventDispatcher->dispatch(new ResponseEvent($request, $response));
 
         return $response;
