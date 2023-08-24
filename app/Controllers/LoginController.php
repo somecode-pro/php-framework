@@ -36,4 +36,9 @@ class LoginController extends AbstractController
 
         return new RedirectResponse('/dashboard');
     }
+
+    public function logout()
+    {
+
+    }
 }
